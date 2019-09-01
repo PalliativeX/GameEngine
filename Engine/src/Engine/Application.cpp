@@ -14,6 +14,9 @@ namespace Engine {
 
 	void Application::run()
 	{
+		WindowResizeEvent e(1280, 720);
+		ENGINE_TRACE(e);
+
 		while (true);
 	}
 
