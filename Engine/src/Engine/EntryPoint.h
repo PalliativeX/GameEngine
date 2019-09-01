@@ -7,8 +7,8 @@ extern Engine::Application* Engine::createApplication();
 int main(int argc, char** argv)
 {
 	Engine::Log::init();
-	Engine::Log::getCoreLogger()->warn("Initialized Log!");
-	Engine::Log::getClientLogger()->info("Hello!");
+	ENGINE_CORE_WARN("Initialized Log!");
+	ENGINE_INFO("Hello!");
 
 
 	auto app = Engine::createApplication();
