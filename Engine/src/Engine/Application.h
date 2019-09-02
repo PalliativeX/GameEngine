@@ -4,6 +4,7 @@
 #include "events\Event.h"
 #include "events\ApplicationEvent.h"
 #include "Log.h"
+#include "Window.h"
 
 namespace Engine {
 
@@ -14,6 +15,9 @@ namespace Engine {
 		virtual ~Application();
 
 		void run();
+	private:
+		std::unique_ptr<Window> window;
+		bool running = true;
 	};
 
 	// to be defined in CLIENT

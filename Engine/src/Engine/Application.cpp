@@ -1,12 +1,13 @@
 #include "enginepch.h"
-
 #include "Application.h"
+
+#include "GLFW\glfw3.h"
 
 namespace Engine {
 
 	Application::Application()
 	{
-
+		window = std::unique_ptr<Window>(Window::create());
 	}
 
 	Application::~Application()
@@ -16,10 +17,12 @@ namespace Engine {
 
 	void Application::run()
 	{
-		WindowResizeEvent e(1280, 720);
-		ENGINE_TRACE(e);
 
-		while (true);
+		while (running) {
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			window->onUpdate();
+		}
 	}
 
 }

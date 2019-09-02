@@ -35,6 +35,8 @@
       <Filter>Engine\events</Filter>
     </ClInclude>
     <ClInclude Include="src\enginepch.h" />
+    <ClInclude Include="src\Engine\Window.h" />
+    <ClInclude Include="src\platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Application.cpp">
@@ -44,5 +46,6 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\enginepch.cpp" />
+    <ClCompile Include="src\platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>
