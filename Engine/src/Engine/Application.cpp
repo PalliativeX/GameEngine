@@ -20,12 +20,28 @@ namespace Engine {
 	}
 
 
+	void Application::pushLayer(Layer* layer)
+	{
+		layerStack.pushLayer(layer);
+	}
+
+
+	void Application::pushOverlay(Layer* overlay)
+	{
+		layerStack.pushOverlay(overlay);
+	}
+
+
 	void Application::onEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClose));
 
-		ENGINE_CORE_TRACE("{0}", e);
+		for (auto it = layerStack.end(); it != layerStack.begin(); ) {
+			(*--it)->onEvent(e);
+			if (e.handled)
+				break;
+		}
 	}
 
 
@@ -35,7 +51,12 @@ namespace Engine {
 		while (running) {
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (Layer* layer : layerStack)
+				layer->onUpdate();
+
 			window->onUpdate();
+
 		}
 	}
 

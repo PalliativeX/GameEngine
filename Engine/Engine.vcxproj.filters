@@ -7,6 +7,12 @@
     <Filter Include="Engine\events">
       <UniqueIdentifier>{7FC35984-EB83-D5BA-B4BE-1E38203E1A97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{4A63C33C-3630-1E48-5F49-0CF04B7553D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\Windows">
+      <UniqueIdentifier>{84B77CA1-70B0-9BF3-99E2-8078853A7BFF}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine.h" />
@@ -19,7 +25,16 @@
     <ClInclude Include="src\Engine\EntryPoint.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Layer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\LayerStack.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Log.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Window.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\events\ApplicationEvent.h">
@@ -35,17 +50,26 @@
       <Filter>Engine\events</Filter>
     </ClInclude>
     <ClInclude Include="src\enginepch.h" />
-    <ClInclude Include="src\Engine\Window.h" />
-    <ClInclude Include="src\platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\platform\Windows\WindowsWindow.h">
+      <Filter>platform\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\Application.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Layer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\LayerStack.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Log.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\enginepch.cpp" />
-    <ClCompile Include="src\platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\platform\Windows\WindowsWindow.cpp">
+      <Filter>platform\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
