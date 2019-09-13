@@ -4,17 +4,16 @@
 #include <memory>
 #include <utility>
 #include <algorithm>
-#include <functional>	
+#include <functional>
 
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Engine\Log.h"
+#include "Engine/Log.h"
 
 #ifdef ENGINE_PLATFORM_WINDOWS
-	#include <Windows.h>
-#endif
-
+	#include <windows.h>
+#endif 

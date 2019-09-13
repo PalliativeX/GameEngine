@@ -2,18 +2,15 @@
 
 #ifdef ENGINE_PLATFORM_WINDOWS
 
-extern Engine::Application* Engine::createApplication();
+extern Engine::Application *Engine::createApplication();
 
-int main(int argc, char** argv)
+int main(int argc, char **argv) 
 {
 	Engine::Log::init();
-	ENGINE_CORE_WARN("Initialized Log!");
-	ENGINE_INFO("Hello!");
-
 
 	auto app = Engine::createApplication();
 	app->run();
 	delete app;
 }
 
-#endif
+#endif 

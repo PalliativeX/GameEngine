@@ -1,11 +1,10 @@
 #pragma once
 
 #include "Core.h"
-#include "events\Event.h"
-#include "events\ApplicationEvent.h"
-#include "Log.h"
+#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
 #include "Window.h"
-#include "Engine\LayerStack.h"
+#include "LayerStack.h"
 
 namespace Engine {
 
@@ -17,20 +16,23 @@ namespace Engine {
 
 		void run();
 
-		void onEvent(Event& e);
+		void onEvent(Event &e);
 
-		void pushLayer(Layer* layer);
-		void pushOverlay(Layer* layer);
+		void pushLayer(Layer *layer);
+		void pushOverlay(Layer *layer);
+
+		static inline Application &get() { return *instance; }
+		inline Window &getWindow() { return *window; }
 	private:
-		bool onWindowClose(WindowCloseEvent& e);
-
+		bool onWindowClose(WindowCloseEvent &event);
 
 		std::unique_ptr<Window> window;
-		bool running = true;
 		LayerStack layerStack;
+		bool running = true;
+
+		static Application *instance;
 	};
 
-	// to be defined in CLIENT
-	Application* createApplication();
+	Application *createApplication();
 
 }

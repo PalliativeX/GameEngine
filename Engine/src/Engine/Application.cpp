@@ -1,70 +1,80 @@
 #include "enginepch.h"
+
 #include "Application.h"
 
-#include <glad/glad.h>
+#include "Engine/Events/ApplicationEvent.h"
+#include "Engine/Log.h"
+
+#include <GLAD/glad.h>
+
+#include "Core.h"
 
 namespace Engine {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
+
+	Application* Application::instance = nullptr;
 
 	Application::Application()
 	{
-		window = std::unique_ptr<Window>(Window::create());
-		window->setEventCallback(BIND_EVENT_FN(onEvent));
-	}
+		ENGINE_ASSERT(!instance, "Application already exists")
+		instance = this;
 
+		window = std::unique_ptr<Window>(Window::create());
+		window->setEventCallback(BIND_EVENT(Application::onEvent));
+	}
 
 	Application::~Application()
 	{
-
 	}
 
-
-	void Application::pushLayer(Layer* layer)
+	void Application::onEvent(Event &event)
 	{
-		layerStack.pushLayer(layer);
-	}
+		EventDispatcher dispatcher(event);
 
-
-	void Application::pushOverlay(Layer* overlay)
-	{
-		layerStack.pushOverlay(overlay);
-	}
-
-
-	void Application::onEvent(Event& e)
-	{
-		EventDispatcher dispatcher(e);
-		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClose));
-
-		for (auto it = layerStack.end(); it != layerStack.begin(); ) {
-			(*--it)->onEvent(e);
-			if (e.handled)
+		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT(Application::onWindowClose));
+		ENGINE_LOG_TRACE(event.toString());
+		for (auto it = layerStack.end(); it != layerStack.begin();)
+		{
+			(*--it)->onEvent(event);
+			if (event.handled)
 				break;
 		}
 	}
 
+	void Application::pushLayer(Layer * layer)
+	{
+		layerStack.pushLayer(layer);
+		layer->onAttach();
+	}
+
+	void Application::pushOverlay(Layer * layer)
+	{
+		layerStack.pushOverlay(layer);
+		layer->onAttach();
+	}
 
 	void Application::run()
 	{
-
-		while (running) {
-			glClearColor(1, 0, 1, 1);
+		while (running)
+		{
+			glClearColor(1, 0.5f, 0, 0.44f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			for (Layer* layer : layerStack)
+			for (Layer *layer : layerStack)
 				layer->onUpdate();
 
 			window->onUpdate();
-
 		}
 	}
 
-
-	bool Application::onWindowClose(WindowCloseEvent& e)
+	bool Application::onWindowClose(WindowCloseEvent &event) 
 	{
 		running = false;
 		return true;
 	}
-
+	Application* createApplication()
+	{
+		return nullptr;
+	}
 }

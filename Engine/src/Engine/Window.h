@@ -2,11 +2,10 @@
 
 #include "enginepch.h"
 
-#include "Engine/Core.h"
-#include "Engine/events/Event.h"
+#include "Core.h"
+#include "Engine/Events/Event.h"
 
-namespace Engine
-{
+namespace Engine {
 
 	struct WindowProps
 	{
@@ -14,10 +13,13 @@ namespace Engine
 		unsigned int width;
 		unsigned int height;
 
-		WindowProps(const std::string& Title = "Game Engine",
-					unsigned int Width = 1280,
+		WindowProps(const std::string &Title = "Engine", 
+					unsigned int Width = 1280, 
 					unsigned int Height = 720)
-			: title(Title), width(Width), height(Height) {}
+					: title(Title), width(Width), height(Height)
+		{
+		}
+
 	};
 
 	class ENGINE_API Window
@@ -25,17 +27,20 @@ namespace Engine
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window() {}
+		virtual ~Window()
+		{
+		}
+
 		virtual void onUpdate() = 0;
 
 		virtual unsigned int getWidth() const = 0;
 		virtual unsigned int getHeight() const = 0;
 
-		// window attributes
-		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
+		virtual void setEventCallback(const EventCallbackFn &callback) = 0;
 		virtual void setVSync(bool enabled) = 0;
 		virtual bool isVSyncEnabled() const = 0;
 
-		static Window* create(const WindowProps& props = WindowProps());
+		static Window *create(const WindowProps &props = WindowProps());
 	};
+
 }

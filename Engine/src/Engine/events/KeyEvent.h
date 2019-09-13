@@ -2,32 +2,39 @@
 
 #include "Event.h"
 
-namespace Engine
-{
+namespace Engine {
 
 	class ENGINE_API KeyEvent : public Event
 	{
 	public:
-		inline int getKeyCode() const { return keyCode; }
+		inline int getKeyCode() const
+		{
+			return keycode;
+		}
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keycode) : keyCode(keycode) {}
+		KeyEvent(int Keycode) : keycode(Keycode)
+		{
+		}
 
-		int keyCode;
+		int keycode;
 	};
 
 	class ENGINE_API KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(int keycode, int RepeatCount) : KeyEvent(keycode), repeatCount(RepeatCount) {}
-		
-		inline int getRepeatCount() const { return repeatCount; }
+		KeyPressedEvent(int Keycode, int RepeatCount) : KeyEvent(Keycode), repeatCount(RepeatCount) {}
+
+		inline int getRepeatCount() const
+		{
+			return repeatCount;
+		}
 
 		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << keyCode << " (" << repeatCount << " repeats)";
+			ss << "KeyPressedEvent: " << keycode << " (" << repeatCount << " repeats)";
 			return ss.str();
 		}
 
@@ -39,15 +46,35 @@ namespace Engine
 	class ENGINE_API KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
-		
+		KeyReleasedEvent(int Keycode) : KeyEvent(Keycode)
+		{
+		}
+
 		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << keyCode;
+			ss << "KeyReleasedEvent: " << keycode;
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	class ENGINE_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int Keycode) : KeyEvent(Keycode)
+		{
+		}
+
+		std::string toString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << keycode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+	};
+
 }

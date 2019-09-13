@@ -10,13 +10,15 @@ workspace "Engine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Engine/vendor/GLFW/include"
 IncludeDir["Glad"] = "Engine/vendor/Glad/include"
+IncludeDir["ImGui"] = "Engine/vendor/ImGui"
 
 include "Engine/vendor/GLFW"
 include "Engine/vendor/Glad"
-
+include "Engine/vendor/ImGui"
 
 project "Engine"
 	location "Engine"
@@ -40,31 +42,34 @@ project "Engine"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
-	links
-	{
+	links 
+	{ 
 		"GLFW",
-		"opengl32.lib",
-		"Glad"
+		"Glad",
+		"ImGui",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "Off"
+		staticruntime "On"
 		systemversion "latest"
 
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
 			"ENGINE_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
+			"IMGUI_IMPL_OPENGL_LOADER_GLAD"
 		}
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox");
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 		}
 
 	filter "configurations:Debug"
@@ -109,7 +114,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "Off"
+		staticruntime "On"
 		systemversion "latest"
 
 		defines

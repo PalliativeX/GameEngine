@@ -2,8 +2,8 @@
 
 #include "Event.h"
 
-namespace Engine
-{
+namespace Engine {
+
 	class ENGINE_API MouseMovedEvent : public Event
 	{
 	public:
@@ -15,17 +15,20 @@ namespace Engine
 		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseMovedEvent: " << mouseX << ", " << mouseY;
+			ss << "MouseMovedEvent: " << getX() << ", " << getY();
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(MouseMoved)
+
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-	private:
-		float mouseX, mouseY;
-	};
 
+
+	private:
+		float mouseX;
+		float mouseY;
+	};
 
 	class ENGINE_API MouseScrolledEvent : public Event
 	{
@@ -38,33 +41,37 @@ namespace Engine
 		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << getXOffset() << ", " << getYOffset();
+			ss << "MousedScrolledEvent: " << getXOffset() << ", " << getYOffset();
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseScrolled)
+		EVENT_CLASS_TYPE(MouseScrolled)	
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-	private:
-		float xOffset, yOffset;
-	};
 
+
+	private:
+		float xOffset;
+		float yOffset;
+	};
 
 	class ENGINE_API MouseButtonEvent : public Event
 	{
 	public:
 		inline int getMouseButton() const { return button; }
-		
+
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+
 	protected:
 		MouseButtonEvent(int Button) : button(Button) {}
+
 		int button;
 	};
-
 
 	class ENGINE_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(int Button) : MouseButtonEvent(Button) {}
+		MouseButtonPressedEvent(int Button)
+			: MouseButtonEvent(Button) {}
 
 		std::string toString() const override
 		{
@@ -76,11 +83,11 @@ namespace Engine
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-
 	class ENGINE_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(int Button) : MouseButtonEvent(Button) {}
+		MouseButtonReleasedEvent(int Button)
+			: MouseButtonEvent(Button) {}
 
 		std::string toString() const override
 		{
@@ -91,4 +98,5 @@ namespace Engine
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
+
 }
