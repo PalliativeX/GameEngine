@@ -4,6 +4,7 @@
 
 #include "Engine/Events/ApplicationEvent.h"
 #include "Engine/Log.h"
+#include "Engine/Input.h"
 
 #include <GLAD/glad.h>
 
@@ -63,6 +64,9 @@ namespace Engine {
 
 			for (Layer *layer : layerStack)
 				layer->onUpdate();
+
+			auto[x, y] = Input::getMousePosition();
+			ENGINE_LOG_TRACE("{0}, {1}", x, y);
 
 			window->onUpdate();
 		}
