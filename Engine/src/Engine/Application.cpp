@@ -65,9 +65,6 @@ namespace Engine {
 			for (Layer *layer : layerStack)
 				layer->onUpdate();
 
-			auto[x, y] = Input::getMousePosition();
-			ENGINE_LOG_TRACE("{0}, {1}", x, y);
-
 			window->onUpdate();
 		}
 	}

@@ -9,11 +9,13 @@ public:
 
 	void onUpdate() override
 	{
+		if (Engine::Input::IsKeyPressed(ENGINE_KEY_TAB))
+			ENGINE_LOG_INFO("Tab key pressed!");
 	}
 
 	void onEvent(Engine::Event &event) override
 	{
-		CLIENT_LOG_INFO(event.toString());
+		// CLIENT_LOG_INFO(event.toString());
 	}
 };
 
