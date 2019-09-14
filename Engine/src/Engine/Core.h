@@ -7,26 +7,16 @@
 		#define ENGINE_API __declspec(dllimport)
 	#endif 
 #else
-#error Engine only support Windows!
+	#error Engine only support Windows!
 #endif 
 
+#ifdef ENGINE_DEBUG
+	#define ENGINE_ENABLE_ASSERTS
+#endif
+
 #ifdef ENGINE_ENABLE_ASSERTS
-	#define ENGINE_ASSERT(x, ...) 
-	{
-		if (!(x))
-		{
-			ENGINE_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);
-			__debugbreak();
-		}
-	}
-	#define CLIENT_ASSERT(x, ...) 
-	{
-		if (!(x))
-		{
-			CLIENT_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);
-			__debugbreak();
-		}
-	}
+	#define ENGINE_ASSERT(x, ...) {if (!(x)){ENGINE_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);__debugbreak();}}
+	#define CLIENT_ASSERT(x, ...) {if (!(x)){CLIENT_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);__debugbreak();}}
 #else
 	#define ENGINE_ASSERT(x, ...)
 	#define CLIENT_ASEERT(x, ...)
