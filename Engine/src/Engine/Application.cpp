@@ -34,7 +34,7 @@ namespace Engine {
 		EventDispatcher dispatcher(event);
 
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT(Application::onWindowClose));
-		ENGINE_LOG_TRACE(event.toString());
+		//ENGINE_LOG_TRACE(event.toString());
 		for (auto it = layerStack.end(); it != layerStack.begin();)
 		{
 			(*--it)->onEvent(event);

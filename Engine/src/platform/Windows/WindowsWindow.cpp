@@ -146,7 +146,7 @@ namespace Engine {
 		{
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-			MouseMovedEvent event(xPos, yPos);
+			MouseMovedEvent event((float)xPos, (float)yPos);
 			data.EventCallback(event);
 		});
 	}
