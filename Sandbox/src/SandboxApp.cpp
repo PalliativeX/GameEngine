@@ -9,8 +9,7 @@ public:
 
 	void onUpdate() override
 	{
-		if (Engine::Input::IsKeyPressed(ENGINE_KEY_TAB))
-			ENGINE_LOG_INFO("Tab key pressed!");
+	
 	}
 
 	void onEvent(Engine::Event &event) override
@@ -25,7 +24,6 @@ public:
 	Sandbox()
 	{
 		pushLayer(new ExampleLayer());
-		pushOverlay(new Engine::ImGuiLayer());
 	}
 
 	~Sandbox()
