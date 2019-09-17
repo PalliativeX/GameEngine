@@ -1,5 +1,7 @@
 #include <Engine.h>
 
+#include "ImGui/imgui.h"
+
 class ExampleLayer : public Engine::Layer
 {
 public:

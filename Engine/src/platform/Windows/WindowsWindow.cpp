@@ -138,7 +138,7 @@ namespace Engine {
 		{
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-			MouseScrolledEvent event(xOffset, yOffset);
+			MouseScrolledEvent event((float)xOffset, (float)yOffset);
 			data.EventCallback(event);
 		});
 

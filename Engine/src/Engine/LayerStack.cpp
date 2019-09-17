@@ -8,22 +8,22 @@ namespace Engine {
 
 	LayerStack::~LayerStack()
 	{
-		for (Layer *layer : layers)
+		for (Layer* layer : layers)
 			delete layer;
 	}
 
-	void Engine::LayerStack::pushLayer(Layer * layer)
+	void LayerStack::pushLayer(Layer* layer)
 	{
 		layers.emplace(layers.begin() + layerInsertIndex, layer);
 		layerInsertIndex++;
 	}
 
-	void Engine::LayerStack::pushOverlay(Layer * overlay)
+	void LayerStack::pushOverlay(Layer* overlay)
 	{
 		layers.emplace_back(overlay);
 	}
 
-	void Engine::LayerStack::popLayer(Layer * layer)
+	void LayerStack::popLayer(Layer* layer)
 	{
 		auto it = std::find(layers.begin(), layers.end(), layer);
 
@@ -34,7 +34,7 @@ namespace Engine {
 		}
 	}
 
-	void Engine::LayerStack::popOverlay(Layer * overlay)
+	void LayerStack::popOverlay(Layer* overlay)
 	{
 		auto it = std::find(layers.begin(), layers.end(), overlay);
 		if (it != layers.end())

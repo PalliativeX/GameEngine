@@ -1,6 +1,7 @@
 #pragma once 
 
-#include "Engine/Window.h";
+#include "Engine/Window.h"
+
 struct GLFWwindow;
 
 namespace Engine {

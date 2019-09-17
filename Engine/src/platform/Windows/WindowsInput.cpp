@@ -32,18 +32,20 @@ namespace Engine {
 		double xPos, yPos;
 		glfwGetCursorPos(window, &xPos, &yPos);
 
-		return { xPos, yPos };
+		return { (float)xPos, (float)yPos };
 	}
 
 	float Engine::WindowsInput::getMouseXImpl()
 	{
 		auto[x, y] = getMousePositionImpl();
+		y;
 		return x;
 	}
 
 	float Engine::WindowsInput::getMouseYImpl()
 	{
 		auto[x, y] = getMousePositionImpl();
+		x;
 		return y;
 	}
 

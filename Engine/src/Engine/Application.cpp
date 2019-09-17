@@ -83,8 +83,4 @@ namespace Engine {
 		return true;
 	}
 
-	Application* createApplication()
-	{
-		return nullptr;
-	}
 }
