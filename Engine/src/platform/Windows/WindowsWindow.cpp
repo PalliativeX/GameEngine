@@ -6,11 +6,9 @@
 
 #include "WindowsWindow.h"
 
-#include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
 
-
-
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Engine {
 
@@ -54,10 +52,12 @@ namespace Engine {
 			s_GLFWInitialized = true;
 		}
 		window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(window);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		ENGINE_ASSERT(status, "Failed to initialize GLAD");
+		context = new OpenGLContext(window);
+
+		context->init();
+
+		glfwMakeContextCurrent(window);
 
 		glfwSetWindowUserPointer(window, &m_Data);
 		setVSync(true);
@@ -159,7 +159,7 @@ namespace Engine {
 	void WindowsWindow::onUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(window);
+		context->swapBuffers();
 	}
 
 	void WindowsWindow::setVSync(bool enabled)
