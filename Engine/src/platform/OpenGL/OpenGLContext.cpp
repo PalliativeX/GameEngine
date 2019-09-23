@@ -17,6 +17,11 @@ namespace Engine {
 		glfwMakeContextCurrent(windowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		ENGINE_ASSERT(status, "Failed to initialize Glad!");
+
+		ENGINE_LOG_INFO("OpenGL Info:");
+		ENGINE_LOG_INFO(" Vendor: {0}", glGetString(GL_VENDOR));
+		ENGINE_LOG_INFO(" Renderer: {0}", glGetString(GL_RENDERER));
+		ENGINE_LOG_INFO(" Version: {0}", glGetString(GL_VERSION));
 	}
 
 

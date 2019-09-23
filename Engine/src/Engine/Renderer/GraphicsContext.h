@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Engine
-{
+namespace Engine {
 
 	class GraphicsContext
 	{
@@ -9,4 +8,5 @@ namespace Engine
 		virtual void init() = 0;
 		virtual void swapBuffers() = 0;
 	};
+
 }

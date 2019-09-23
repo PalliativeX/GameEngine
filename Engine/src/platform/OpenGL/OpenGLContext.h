@@ -15,6 +15,6 @@ namespace Engine {
 		virtual void swapBuffers() override;
 
 	private:
-		GLFWwindow * windowHandle;
+		GLFWwindow* windowHandle;
 	};
 }

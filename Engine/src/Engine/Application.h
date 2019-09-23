@@ -33,6 +33,9 @@ namespace Engine {
 		LayerStack layerStack;
 		bool running = true;
 
+		unsigned int vertexArray, vertexBuffer, indexBuffer;
+
+	private:
 		static Application *instance;
 	};
 
