@@ -5,6 +5,7 @@
 #include "glad/glad.h"
 
 namespace Engine {
+
 	OpenGLContext::OpenGLContext(GLFWwindow* WindowHandle) :
 		windowHandle(WindowHandle)
 	{
