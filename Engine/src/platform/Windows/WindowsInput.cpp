@@ -5,7 +5,8 @@
 #include "Engine/Application.h"
 #include <GLFW/glfw3.h>
 
-namespace Engine {
+namespace Engine 
+{
 
 	Input* Input::instance = new WindowsInput();
 

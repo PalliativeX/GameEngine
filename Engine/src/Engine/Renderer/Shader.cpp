@@ -3,7 +3,8 @@
 
 #include <glad/glad.h>
 
-namespace Engine {
+namespace Engine 
+{
 
 	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{

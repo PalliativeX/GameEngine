@@ -1,7 +1,8 @@
 #include "enginepch.h"
 #include "Layer.h"
 
-namespace Engine {
+namespace Engine 
+{
 	Layer::Layer(const std::string &name) : debugName(name)
 	{
 	}

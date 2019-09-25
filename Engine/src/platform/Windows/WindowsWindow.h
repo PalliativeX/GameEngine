@@ -5,7 +5,8 @@
 
 struct GLFWwindow;
 
-namespace Engine {
+namespace Engine 
+{
 
 	class WindowsWindow : public Window
 	{

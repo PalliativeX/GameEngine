@@ -10,7 +10,8 @@
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	static bool s_GLFWInitialized = false;
 

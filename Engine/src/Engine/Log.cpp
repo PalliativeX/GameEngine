@@ -3,7 +3,8 @@
 
 #include "Log.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	std::shared_ptr<spdlog::logger> Log::coreLogger;
 	std::shared_ptr<spdlog::logger> Log::clientLogger;

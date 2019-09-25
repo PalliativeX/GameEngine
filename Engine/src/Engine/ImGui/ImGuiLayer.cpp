@@ -10,7 +10,8 @@
 
 #include "Engine/Application.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer")
 	{ }

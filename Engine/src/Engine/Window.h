@@ -5,7 +5,8 @@
 #include "Core.h"
 #include "Engine/Events/Event.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	struct WindowProps
 	{

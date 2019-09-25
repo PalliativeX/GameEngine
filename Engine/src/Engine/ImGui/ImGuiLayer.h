@@ -6,7 +6,8 @@
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/MouseEvent.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	class ENGINE_API ImGuiLayer : public Layer
 	{

@@ -4,7 +4,8 @@
 
 #include "enginepch.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	enum class EventType
 	{

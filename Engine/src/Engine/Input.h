@@ -2,7 +2,8 @@
 
 #include "Core.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	class ENGINE_API Input
 	{

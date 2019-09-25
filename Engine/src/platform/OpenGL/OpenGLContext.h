@@ -4,7 +4,8 @@
 
 struct GLFWwindow;
 
-namespace Engine {
+namespace Engine 
+{
 
 	class OpenGLContext : public GraphicsContext
 	{

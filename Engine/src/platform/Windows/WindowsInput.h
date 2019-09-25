@@ -2,7 +2,8 @@
 
 #include "Engine/Input.h"
 
-namespace Engine {
+namespace Engine 
+{
 
 	class WindowsInput : public Input
 	{

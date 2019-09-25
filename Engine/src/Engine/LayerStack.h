@@ -4,7 +4,8 @@
 
 #include <vector>
 
-namespace Engine {
+namespace Engine 
+{
 
 	class ENGINE_API LayerStack
 	{

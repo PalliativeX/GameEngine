@@ -1,7 +1,8 @@
 #include "enginepch.h"
 #include "LayerStack.h"
 
-namespace Engine {
+namespace Engine 
+{
 	LayerStack::LayerStack()
 	{
 	}
