@@ -8,6 +8,7 @@
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
+#include "Engine/Renderer/VertexArray.h"
 #include "Engine/Renderer/Shader.h"
 #include "Engine/Renderer/Buffer.h"
 
@@ -37,10 +38,8 @@ namespace Engine
 		LayerStack layerStack;
 		bool running = true;
 
-		unsigned int vertexArray;
-		std::unique_ptr<Shader> shader;
-		std::unique_ptr<VertexBuffer> vertexBuffer;
-		std::unique_ptr<IndexBuffer> indexBuffer;
+		std::shared_ptr<Shader> shader;
+		std::shared_ptr<VertexArray> vertexArray;
 
 	private:
 		static Application *instance;

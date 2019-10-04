@@ -13,9 +13,8 @@
 namespace Engine 
 {
 
-
-
 	Application* Application::instance = nullptr;
+
 
 	Application::Application()
 	{
@@ -28,25 +27,28 @@ namespace Engine
 		imguiLayer = new ImGuiLayer();;
 		pushOverlay(imguiLayer);
 
-		glGenVertexArrays(1, &vertexArray);
-		glBindVertexArray(vertexArray);
+		vertexArray.reset(VertexArray::create());
 
-
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.f,
-			 0.5f, -0.5f, 0.f,
-			 0.0f,  0.5f, 0.f
+		float vertices[] = {
+			-0.75f, -0.75f, 0.f,
+			 0.75f, -0.75f, 0.f,
+			 0.75f,  0.75f, 0.f,
+			-0.75f,  0.75f, 0.f
 		};
 
+		std::shared_ptr<VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
-		vertexBuffer->bind();
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "position" }
+		};
+		vertexBuffer->setLayout(layout);
+		vertexArray->addVertexBuffer(vertexBuffer);
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
-		unsigned int indices[3] = { 0, 1, 2 };
-		indexBuffer.reset(IndexBuffer::create(indices, 3));
-		indexBuffer->bind();
+		unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		vertexArray->setIndexBuffer(indexBuffer);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -57,8 +59,8 @@ namespace Engine
 			
 			void main()
 			{
-				gl_Position = vec4(position + 0.4, 1.0);
-				Position = (position + 0.4) * 0.5 + 0.5;
+				gl_Position = vec4(position, 1.0);
+				Position = position * 0.5 + 0.5;
 			}
 		)";
 
@@ -116,8 +118,8 @@ namespace Engine
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			shader->bind();
-			glBindVertexArray(vertexArray);
-			glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, nullptr);
+			vertexArray->bind();
+			glDrawElements(GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer *layer : layerStack)
 				layer->onUpdate();
