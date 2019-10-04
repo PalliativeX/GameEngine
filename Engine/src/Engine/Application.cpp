@@ -6,7 +6,8 @@
 #include "Engine/Log.h"
 #include "Engine/Input.h"
 
-#include <GLAD/glad.h>
+#include "Engine/Renderer/RenderCommand.h"
+#include "Engine/Renderer/Renderer.h"
 
 #include "Core.h"
 
@@ -114,12 +115,15 @@ namespace Engine
 	{
 		while (running)
 		{
-			glClearColor(0.15f, 0.15f, 0.15f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+			RenderCommand::clear();
+
+			Renderer::beginScene();
 
 			shader->bind();
-			vertexArray->bind();
-			glDrawElements(GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::submit(vertexArray);
+
+			Renderer::endScene();
 
 			for (Layer *layer : layerStack)
 				layer->onUpdate();
