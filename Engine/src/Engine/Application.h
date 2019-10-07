@@ -12,6 +12,9 @@
 #include "Engine/Renderer/Shader.h"
 #include "Engine/Renderer/Buffer.h"
 
+#include "Engine/Renderer/OrthographicCamera.h"
+
+
 namespace Engine 
 {
 
@@ -40,6 +43,8 @@ namespace Engine
 
 		std::shared_ptr<Shader> shader;
 		std::shared_ptr<VertexArray> vertexArray;
+
+		OrthographicCamera camera;
 
 	private:
 		static Application *instance;

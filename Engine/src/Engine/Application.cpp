@@ -18,6 +18,7 @@ namespace Engine
 
 
 	Application::Application()
+		: camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		ENGINE_ASSERT(!instance, "Application already exists")
 		instance = this;
@@ -57,11 +58,14 @@ namespace Engine
 			layout(location = 0) in vec3 position;
 
 			out vec3 Position;
+
+
+			uniform mat4 viewProjection;
 			
 			void main()
 			{
-				gl_Position = vec4(position, 1.0);
-				Position = position * 0.5 + 0.5;
+				gl_Position = viewProjection * vec4(position, 1.0);
+				Position = position * 0.9f + 0.2f;
 			}
 		)";
 
@@ -71,6 +75,7 @@ namespace Engine
 			out vec4 fragColor;
 
 			in vec3 Position;
+
 			
 			void main()
 			{
@@ -118,10 +123,11 @@ namespace Engine
 			RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 			RenderCommand::clear();
 
-			Renderer::beginScene();
+			camera.setRotation(45.f);
 
-			shader->bind();
-			Renderer::submit(vertexArray);
+			Renderer::beginScene(camera);
+
+			Renderer::submit(shader, vertexArray);
 
 			Renderer::endScene();
 
