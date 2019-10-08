@@ -8,17 +8,10 @@
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
-#include "Engine/Renderer/VertexArray.h"
-#include "Engine/Renderer/Shader.h"
-#include "Engine/Renderer/Buffer.h"
-
-#include "Engine/Renderer/OrthographicCamera.h"
-
-
 namespace Engine 
 {
 
-	class ENGINE_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -40,11 +33,6 @@ namespace Engine
 		ImGuiLayer* imguiLayer;
 		LayerStack layerStack;
 		bool running = true;
-
-		std::shared_ptr<Shader> shader;
-		std::shared_ptr<VertexArray> vertexArray;
-
-		OrthographicCamera camera;
 
 	private:
 		static Application *instance;

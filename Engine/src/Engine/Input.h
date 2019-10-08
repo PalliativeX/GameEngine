@@ -9,9 +9,9 @@ namespace Engine
 	{
 	public:
 
-		inline static bool IsKeyPressed(int keycode) { return instance->isKeyPressedImpl(keycode); }
+		inline static bool isKeyPressed(int keycode) { return instance->isKeyPressedImpl(keycode); }
 
-		inline static bool IsMousePressed(int button) { return instance->isMousePressedImpl(button); }
+		inline static bool isMousePressed(int button) { return instance->isMousePressedImpl(button); }
 		inline static std::pair<float, float> getMousePosition() { return instance->getMousePositionImpl(); }
 		inline static float getMouseX() { return instance->getMouseXImpl(); }
 		inline static float getMouseY() { return instance->getMouseYImpl(); }
