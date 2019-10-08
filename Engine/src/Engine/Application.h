@@ -8,6 +8,8 @@
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
+#include "Core/Timestep.h"
+
 namespace Engine 
 {
 
@@ -34,6 +36,7 @@ namespace Engine
 		LayerStack layerStack;
 		bool running = true;
 
+		float lastFrameTime = 0.f;
 	private:
 		static Application *instance;
 	};

@@ -66,19 +66,19 @@ public:
 		shader.reset(new Engine::Shader(vertexSrc, fragmentSrc));
 	}
 
-	void onUpdate() override
+	void onUpdate(Engine::Timestep ts) override
 	{
 		if (Engine::Input::isKeyPressed(ENGINE_KEY_LEFT)) {
-			cameraPosition.x -= cameraMoveSpeed;
+			cameraPosition.x -= cameraMoveSpeed * ts;
 		}
 		else if (Engine::Input::isKeyPressed(ENGINE_KEY_RIGHT)) {
-			cameraPosition.x += cameraMoveSpeed;
+			cameraPosition.x += cameraMoveSpeed * ts;
 		}
 		if (Engine::Input::isKeyPressed(ENGINE_KEY_UP)) {
-			cameraPosition.y += cameraMoveSpeed;
+			cameraPosition.y += cameraMoveSpeed * ts;
 		}
 		else if (Engine::Input::isKeyPressed(ENGINE_KEY_DOWN)) {
-			cameraPosition.y -= cameraMoveSpeed;
+			cameraPosition.y -= cameraMoveSpeed * ts;
 		}
 		if (Engine::Input::isKeyPressed(ENGINE_KEY_A)) {
 			cameraRotation += cameraRotationSpeed;
@@ -117,8 +117,8 @@ private:
 	Engine::OrthographicCamera camera;
 	glm::vec3 cameraPosition;
 	float cameraRotation = 0.f;
-	float cameraRotationSpeed = 2.5f;
-	float cameraMoveSpeed = 0.1f;
+	float cameraRotationSpeed = 10.f;
+	float cameraMoveSpeed = 2.f;
 };
 
 class Sandbox : public Engine::Application

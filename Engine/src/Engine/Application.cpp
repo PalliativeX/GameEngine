@@ -9,6 +9,8 @@
 #include "Engine/Renderer/RenderCommand.h"
 #include "Engine/Renderer/Renderer.h"
 
+#include <GLFW/glfw3.h>
+
 #include "Core.h"
 
 namespace Engine 
@@ -64,8 +66,12 @@ namespace Engine
 	{
 		while (running)
 		{
+			float time = (float)glfwGetTime();
+			Timestep timestep = time - lastFrameTime;
+			lastFrameTime = time;
+
 			for (Layer *layer : layerStack)
-				layer->onUpdate();
+				layer->onUpdate(timestep);
 
 			imguiLayer->begin();
 			for (Layer* layer : layerStack)
