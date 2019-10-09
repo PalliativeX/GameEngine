@@ -2,6 +2,8 @@
 
 #include "ImGui/imgui.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public Engine::Layer
 {
 public:
@@ -12,10 +14,10 @@ public:
 		vertexArray.reset(Engine::VertexArray::create());
 
 		float vertices[] = {
-			-0.75f, -0.75f, 0.f,
-			0.75f, -0.75f, 0.f,
-			0.75f,  0.75f, 0.f,
-			-0.75f,  0.75f, 0.f
+			-0.5f, -0.5f, 0.f,
+			 0.5f, -0.5f, 0.f,
+			 0.5f,  0.5f, 0.f,
+			-0.5f,  0.5f, 0.f
 		};
 
 		std::shared_ptr<Engine::VertexBuffer> vertexBuffer;
@@ -39,12 +41,12 @@ public:
 
 			out vec3 Position;
 
-
 			uniform mat4 viewProjection;
+			uniform mat4 model;
 			
 			void main()
 			{
-				gl_Position = viewProjection * vec4(position, 1.0);
+				gl_Position = viewProjection * model * vec4(position, 1.0);
 				Position = position * 0.9f + 0.2f;
 			}
 		)";
@@ -96,7 +98,14 @@ public:
 
 		Engine::Renderer::beginScene(camera);
 
-		Engine::Renderer::submit(shader, vertexArray);
+		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
+		for (int y = 0; y < 20; y++) {
+			for (int x = 0; x < 20; x++) {
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
+				Engine::Renderer::submit(shader, vertexArray, transform);
+			}
+		}
 
 		Engine::Renderer::endScene();
 	}
