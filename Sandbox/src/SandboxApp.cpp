@@ -1,8 +1,11 @@
 #include <Engine.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "ImGui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Engine::Layer
 {
@@ -39,15 +42,12 @@ public:
 
 			layout(location = 0) in vec3 position;
 
-			out vec3 Position;
-
 			uniform mat4 viewProjection;
 			uniform mat4 model;
 			
 			void main()
 			{
 				gl_Position = viewProjection * model * vec4(position, 1.0);
-				Position = position * 0.9f + 0.2f;
 			}
 		)";
 
@@ -56,16 +56,15 @@ public:
 
 			out vec4 fragColor;
 
-			in vec3 Position;
-
+			uniform vec3 color;
 			
 			void main()
 			{
-				fragColor = vec4(Position, 1.0);
+				fragColor = vec4(color, 1.0);
 			}
 		)";
 
-		shader.reset(new Engine::Shader(vertexSrc, fragmentSrc));
+		shader.reset(Engine::Shader::create(vertexSrc, fragmentSrc));
 	}
 
 	void onUpdate(Engine::Timestep ts) override
@@ -99,6 +98,10 @@ public:
 		Engine::Renderer::beginScene(camera);
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
+
+		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->bind();
+		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->uploadUniformFloat3("color", squareColor);
+
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
@@ -112,7 +115,9 @@ public:
 
 	void onImGuiRender() override
 	{
-
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(squareColor));
+		ImGui::End();
 	}
 
 	void onEvent(Engine::Event &event) override
@@ -128,6 +133,8 @@ private:
 	float cameraRotation = 0.f;
 	float cameraRotationSpeed = 10.f;
 	float cameraMoveSpeed = 2.f;
+
+	glm::vec3 squareColor = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public Engine::Application
