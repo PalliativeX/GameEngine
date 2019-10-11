@@ -11,7 +11,7 @@ namespace Engine
 		inline static void setClearColor(const glm::vec4& color) { rendererAPI->setClearColor(color); }
 		inline static void clear() { rendererAPI->clear(); }
 
-		inline static void drawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+		inline static void drawIndexed(const Ref<VertexArray>& vertexArray)
 		{
 			rendererAPI->drawIndexed(vertexArray);
 		}
