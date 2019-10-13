@@ -17,16 +17,17 @@ public:
 		vertexArray.reset(Engine::VertexArray::create());
 
 		float vertices[] = {
-			-0.5f, -0.5f, 0.f,
-			 0.5f, -0.5f, 0.f,
-			 0.5f,  0.5f, 0.f,
-			-0.5f,  0.5f, 0.f
+			-0.5f, -0.5f, 0.f, 0.f, 0.f,
+			 0.5f, -0.5f, 0.f, 1.f, 0.f,
+			 0.5f,  0.5f, 0.f, 1.f, 1.f, 
+			-0.5f,  0.5f, 0.f, 0.f, 1.f
 		};
 
 		std::shared_ptr<Engine::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Engine::VertexBuffer::create(vertices, sizeof(vertices)));
 		Engine::BufferLayout layout = {
-			{ Engine::ShaderDataType::Float3, "position" }
+			{ Engine::ShaderDataType::Float3, "position" },
+			{ Engine::ShaderDataType::Float2, "texCoord" }
 		};
 		vertexBuffer->setLayout(layout);
 		vertexArray->addVertexBuffer(vertexBuffer);
@@ -41,13 +42,17 @@ public:
 			#version 330 core
 
 			layout(location = 0) in vec3 position;
+			layout(location = 1) in vec2 texCoord;
 
 			uniform mat4 viewProjection;
 			uniform mat4 model;
+
+			out vec2 TexCoord;
 			
 			void main()
 			{
 				gl_Position = viewProjection * model * vec4(position, 1.0);
+				TexCoord = texCoord;
 			}
 		)";
 
@@ -56,15 +61,23 @@ public:
 
 			out vec4 fragColor;
 
-			uniform vec3 color;
+			in vec2 TexCoord;
+
+			uniform sampler2D diffuse;
 			
 			void main()
 			{
-				fragColor = vec4(color, 1.0);
+				fragColor = texture(diffuse, TexCoord);
 			}
 		)";
 
 		shader.reset(Engine::Shader::create(vertexSrc, fragmentSrc));
+
+		texture = Engine::Texture2D::create("assets/textures/Checkerboard.png");
+		texture->bind();
+
+		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->bind();
+		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->uploadUniformInt("diffuse", 0);
 	}
 
 	void onUpdate(Engine::Timestep ts) override
@@ -100,7 +113,7 @@ public:
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
 		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->bind();
-		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->uploadUniformFloat3("color", squareColor);
+		texture->bind();
 
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
@@ -127,6 +140,7 @@ public:
 private:
 	std::shared_ptr<Engine::Shader> shader;
 	std::shared_ptr<Engine::VertexArray> vertexArray;
+	Engine::Ref<Engine::Texture2D> texture;
 
 	Engine::OrthographicCamera camera;
 	glm::vec3 cameraPosition;
