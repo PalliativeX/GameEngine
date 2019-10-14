@@ -73,8 +73,11 @@ public:
 
 		shader.reset(Engine::Shader::create(vertexSrc, fragmentSrc));
 
-		texture = Engine::Texture2D::create("assets/textures/Checkerboard.png");
+		texture = Engine::Texture2D::create("assets/textures/sun.jpg");
 		texture->bind();
+
+		logoTexture = Engine::Texture2D::create("assets/textures/protoss_yellow.png");
+		logoTexture->bind();
 
 		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->bind();
 		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->uploadUniformInt("diffuse", 0);
@@ -113,15 +116,19 @@ public:
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
 		std::dynamic_pointer_cast<Engine::OpenGLShader>(shader)->bind();
-		texture->bind();
 
+
+		texture->bind();
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
-				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
+				glm::vec3 pos(x * 0.11f - 0.7f, y * 0.11f - 0.7f, 0.f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
 				Engine::Renderer::submit(shader, vertexArray, transform);
 			}
 		}
+
+		logoTexture->bind();
+		Engine::Renderer::submit(shader, vertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(2.f, 1.f, 0.f)));
 
 		Engine::Renderer::endScene();
 	}
@@ -141,6 +148,7 @@ private:
 	std::shared_ptr<Engine::Shader> shader;
 	std::shared_ptr<Engine::VertexArray> vertexArray;
 	Engine::Ref<Engine::Texture2D> texture;
+	Engine::Ref<Engine::Texture2D> logoTexture;
 
 	Engine::OrthographicCamera camera;
 	glm::vec3 cameraPosition;
