@@ -38,40 +38,7 @@ public:
 		indexBuffer.reset(Engine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
 		vertexArray->setIndexBuffer(indexBuffer);
 
-		std::string vertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec2 texCoord;
-
-			uniform mat4 viewProjection;
-			uniform mat4 model;
-
-			out vec2 TexCoord;
-			
-			void main()
-			{
-				gl_Position = viewProjection * model * vec4(position, 1.0);
-				TexCoord = texCoord;
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-
-			out vec4 fragColor;
-
-			in vec2 TexCoord;
-
-			uniform sampler2D diffuse;
-			
-			void main()
-			{
-				fragColor = texture(diffuse, TexCoord);
-			}
-		)";
-
-		shader.reset(Engine::Shader::create(vertexSrc, fragmentSrc));
+		shader.reset(Engine::Shader::create("assets/shaders/shader.glsl"));
 
 		texture = Engine::Texture2D::create("assets/textures/sun.jpg");
 		texture->bind();
