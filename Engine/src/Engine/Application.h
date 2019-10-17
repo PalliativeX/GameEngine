@@ -29,12 +29,14 @@ namespace Engine
 		static inline Application &get() { return *instance; }
 		inline Window &getWindow() { return *window; }
 	private:
-		bool onWindowClose(WindowCloseEvent &event);
+		bool onWindowClose(WindowCloseEvent& e);
+		bool onWindowResize(WindowResizeEvent& e);
 
 		std::unique_ptr<Window> window;
 		ImGuiLayer* imguiLayer;
 		LayerStack layerStack;
 		bool running = true;
+		bool minimized = false;
 
 		float lastFrameTime = 0.f;
 	private:

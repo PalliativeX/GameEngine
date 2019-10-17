@@ -43,7 +43,8 @@ namespace Engine
 		EventDispatcher dispatcher(event);
 
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT(Application::onWindowClose));
-		//ENGINE_LOG_TRACE(event.toString());
+		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT(Application::onWindowResize));
+
 		for (auto it = layerStack.end(); it != layerStack.begin();)
 		{
 			(*--it)->onEvent(event);
@@ -72,8 +73,11 @@ namespace Engine
 			Timestep timestep = time - lastFrameTime;
 			lastFrameTime = time;
 
-			for (Layer *layer : layerStack)
-				layer->onUpdate(timestep);
+			if (!minimized) {
+				for (Layer *layer : layerStack)
+					layer->onUpdate(timestep);
+
+			}
 
 			imguiLayer->begin();
 			for (Layer* layer : layerStack)
@@ -84,10 +88,22 @@ namespace Engine
 		}
 	}
 
-	bool Application::onWindowClose(WindowCloseEvent &event) 
+	bool Application::onWindowClose(WindowCloseEvent& e) 
 	{
 		running = false;
 		return true;
 	}
 
+	bool Application::onWindowResize(WindowResizeEvent& e)
+	{
+		if (e.getWidth() == 0 || e.getHeight() == 0) {
+			minimized = true;
+			return false;
+		}
+
+		minimized = false;
+		Renderer::onWindowResize(e.getWidth(), e.getHeight());
+
+		return false;
+	}
 }
