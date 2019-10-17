@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	Shader * Shader::create(const std::string & vertexSrc, const std::string & fragmentSrc)
+	Ref<Shader> Shader::create(const std::string& name, const std::string & vertexSrc, const std::string & fragmentSrc)
 	{
 		switch (Renderer::getAPI()) 
 		{
@@ -14,14 +14,14 @@ namespace Engine
 				ENGINE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return new OpenGLShader(vertexSrc, fragmentSrc);
+				return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		ENGINE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
 
-	Shader * Shader::create(const std::string & filepath)
+	Ref<Shader> Shader::create(const std::string & filepath)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -29,11 +29,49 @@ namespace Engine
 			ENGINE_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLShader(filepath);
+			return std::make_shared<OpenGLShader>(filepath);
 		}
 
 		ENGINE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
+	}
+
+
+	void ShaderLibrary::add(const std::string & name, const Ref<Shader>& shader)
+	{
+		ENGINE_ASSERT(!exists(name), "Shader already exists!");
+		shaders[name] = shader;
+	}
+
+	void ShaderLibrary::add(const Ref<Shader>& shader)
+	{
+		auto& name = shader->getName();
+		add(name, shader);
+	}
+
+	Ref<Shader> ShaderLibrary::load(const std::string & filepath)
+	{
+		auto shader = Shader::create(filepath);
+		add(shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::load(const std::string & name, const std::string & filepath)
+	{
+		auto shader = Shader::create(filepath);
+		add(name, shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::get(const std::string & name)
+	{
+		ENGINE_ASSERT(exists(name), "Shader not found!");
+		return shaders[name];
+	}
+
+	bool ShaderLibrary::exists(const std::string & name) const
+	{
+		return shaders.find(name) != shaders.end();
 	}
 
 }

@@ -13,11 +13,13 @@ namespace Engine
 	{
 	public:
 		OpenGLShader(const std::string& filepath);
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		OpenGLShader(const std::string& Name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
 		virtual void bind() const override;
 		virtual void unbind() const override;
+
+		virtual const std::string& getName() const override { return name; }
 
 		void uploadUniformInt(const std::string& name, int value);
 
@@ -35,5 +37,6 @@ namespace Engine
 
 	private:
 		uint32_t rendererID;
+		std::string name;
 	};
 }

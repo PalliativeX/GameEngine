@@ -38,7 +38,7 @@ public:
 		indexBuffer.reset(Engine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
 		vertexArray->setIndexBuffer(indexBuffer);
 
-		shader.reset(Engine::Shader::create("assets/shaders/shader.glsl"));
+		shader = shaderLibrary.load("assets/shaders/shader.glsl");
 
 		texture = Engine::Texture2D::create("assets/textures/sun.jpg");
 		texture->bind();
@@ -112,6 +112,7 @@ public:
 	}
 
 private:
+	Engine::ShaderLibrary shaderLibrary;
 	std::shared_ptr<Engine::Shader> shader;
 	std::shared_ptr<Engine::VertexArray> vertexArray;
 	Engine::Ref<Engine::Texture2D> texture;
