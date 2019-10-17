@@ -12,6 +12,12 @@ namespace Engine
 		viewProjectionMatrix = projectionMatrix * viewMatrix;
 	}
 
+	void OrthographicCamera::setProjection(float left, float right, float bottom, float top)
+	{
+		projectionMatrix = glm::ortho(left, right, bottom, top, -1.f, 1.f);
+		viewProjectionMatrix = projectionMatrix * viewMatrix;
+	}
+
 
 	void OrthographicCamera::recalculateViewMatrix()
 	{

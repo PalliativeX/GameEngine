@@ -11,7 +11,7 @@ class ExampleLayer : public Engine::Layer
 {
 public:
 	ExampleLayer() : 
-		Layer("Example"), camera(-1.6f, 1.6f, -0.9f, 0.9f), cameraPosition(0.f)
+		Layer("Example"), cameraController(1280.f / 720.f, true)
 
 	{
 		vertexArray.reset(Engine::VertexArray::create());
@@ -52,33 +52,14 @@ public:
 
 	void onUpdate(Engine::Timestep ts) override
 	{
-		if (Engine::Input::isKeyPressed(ENGINE_KEY_LEFT)) {
-			cameraPosition.x -= cameraMoveSpeed * ts;
-		}
-		else if (Engine::Input::isKeyPressed(ENGINE_KEY_RIGHT)) {
-			cameraPosition.x += cameraMoveSpeed * ts;
-		}
-		if (Engine::Input::isKeyPressed(ENGINE_KEY_UP)) {
-			cameraPosition.y += cameraMoveSpeed * ts;
-		}
-		else if (Engine::Input::isKeyPressed(ENGINE_KEY_DOWN)) {
-			cameraPosition.y -= cameraMoveSpeed * ts;
-		}
-		if (Engine::Input::isKeyPressed(ENGINE_KEY_A)) {
-			cameraRotation += cameraRotationSpeed;
-		}
-		if (Engine::Input::isKeyPressed(ENGINE_KEY_D)) {
-			cameraRotation -= cameraRotationSpeed;
-		}
+		// update
+		cameraController.onUpdate(ts);
 
-
+		// render
 		Engine::RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Engine::RenderCommand::clear();
 
-		camera.setPosition(cameraPosition);
-		camera.setRotation(cameraRotation);
-
-		Engine::Renderer::beginScene(camera);
+		Engine::Renderer::beginScene(cameraController.getCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
@@ -107,8 +88,9 @@ public:
 		ImGui::End();
 	}
 
-	void onEvent(Engine::Event &event) override
+	void onEvent(Engine::Event &e) override
 	{
+		cameraController.onEvent(e);
 	}
 
 private:
@@ -118,7 +100,7 @@ private:
 	Engine::Ref<Engine::Texture2D> texture;
 	Engine::Ref<Engine::Texture2D> logoTexture;
 
-	Engine::OrthographicCamera camera;
+	Engine::OrthographicCameraController cameraController;
 	glm::vec3 cameraPosition;
 	float cameraRotation = 0.f;
 	float cameraRotationSpeed = 10.f;
