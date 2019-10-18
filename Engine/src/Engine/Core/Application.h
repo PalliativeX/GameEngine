@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Engine/Events/Event.h"
+#include "Engine/Events/ApplicationEvent.h"
 #include "Window.h"
 #include "LayerStack.h"
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
-#include "Core/Timestep.h"
+#include "Timestep.h"
 
 namespace Engine 
 {

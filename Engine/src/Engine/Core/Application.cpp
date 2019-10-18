@@ -3,8 +3,8 @@
 #include "Application.h"
 
 #include "Engine/Events/ApplicationEvent.h"
-#include "Engine/Log.h"
-#include "Engine/Input.h"
+#include "Log.h"
+#include "Input.h"
 
 #include "Engine/Renderer/RenderCommand.h"
 #include "Engine/Renderer/Renderer.h"

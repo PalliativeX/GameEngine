@@ -1,4 +1,5 @@
 #include <Engine.h>
+#include <Engine/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -7,6 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Sandbox2D.h"
+
 class ExampleLayer : public Engine::Layer
 {
 public:
@@ -14,7 +17,7 @@ public:
 		Layer("Example"), cameraController(1280.f / 720.f, true)
 
 	{
-		vertexArray.reset(Engine::VertexArray::create());
+		vertexArray = Engine::VertexArray::create();
 
 		float vertices[] = {
 			-0.5f, -0.5f, 0.f, 0.f, 0.f,
@@ -114,7 +117,8 @@ class Sandbox : public Engine::Application
 public:
 	Sandbox()
 	{
-		pushLayer(new ExampleLayer());
+		//pushLayer(new ExampleLayer());
+		pushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

@@ -9,8 +9,10 @@ namespace Engine
 
 	LayerStack::~LayerStack()
 	{
-		for (Layer* layer : layers)
+		for (Layer* layer : layers) {
+			layer->onDetach();
 			delete layer;
+		}
 	}
 
 	void LayerStack::pushLayer(Layer* layer)

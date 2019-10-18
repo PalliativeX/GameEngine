@@ -24,6 +24,15 @@ namespace Engine
 		ENGINE_LOG_INFO(" Vendor: {0}", glGetString(GL_VENDOR));
 		ENGINE_LOG_INFO(" Renderer: {0}", glGetString(GL_RENDERER));
 		ENGINE_LOG_INFO(" Version: {0}", glGetString(GL_VERSION));
+
+		#ifdef ENGINE_ENABLE_ASSERTS
+			int versionMajor;
+			int versionMinor;
+			glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+			glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+
+			ENGINE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5), "Engine requires at least OpenGL version 4.5!");
+		#endif
 	}
 
 
