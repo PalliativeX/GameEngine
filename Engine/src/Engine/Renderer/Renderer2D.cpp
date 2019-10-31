@@ -13,6 +13,7 @@ namespace Engine
 	{
 		Ref<VertexArray> quadVertexArray;
 		Ref<Shader> shader;
+		Ref<Shader> textureShader;
 	};
 
 	static Renderer2DStorage* data;
@@ -23,17 +24,18 @@ namespace Engine
 		data = new Renderer2DStorage();
 		data->quadVertexArray = VertexArray::create();
 
-		float squareVertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[] = {
+			-0.5f, -0.5f, 0.0f, 0.f, 0.f,
+			 0.5f, -0.5f, 0.0f, 1.f, 0.f,
+			 0.5f,  0.5f, 0.0f, 1.f, 1.f,
+			-0.5f,  0.5f, 0.0f, 0.f, 1.f
 		};
 
 		Ref<VertexBuffer> squareVB;
 		squareVB.reset(VertexBuffer::create(squareVertices, sizeof(squareVertices)));
 		squareVB->setLayout({
-			{ ShaderDataType::Float3, "position"}
+			{ ShaderDataType::Float3, "position"},
+			{ ShaderDataType::Float2, "texCoord"}
 			});
 		data->quadVertexArray->addVertexBuffer(squareVB);
 
@@ -43,6 +45,8 @@ namespace Engine
 		data->quadVertexArray->setIndexBuffer(squareIB);
 
 		data->shader = Shader::create("assets/shaders/flatColor.glsl");
+		data->textureShader= Shader::create("assets/shaders/texture.glsl");
+		data->textureShader->setInt("texture", 0);
 	}
 
 	void Renderer2D::shutdown()
@@ -54,6 +58,9 @@ namespace Engine
 	{
 		data->shader->bind();
 		data->shader->setMat4("viewProjection", camera.getViewProjectionMatrix());
+
+		data->textureShader->bind();
+		data->textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
 	}
 
 	void Renderer2D::endScene()
@@ -72,8 +79,26 @@ namespace Engine
 		data->shader->setFloat4("color", color);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), { size.x, size.y, 1.f });
-		data->shader->setMat4("model", transform);
+		data->shader->setMat4("transform", transform);
 
+
+		data->quadVertexArray->bind();
+		RenderCommand::drawIndexed(data->quadVertexArray);
+	}
+
+	void Renderer2D::drawQuad(const glm::vec2 & position, const glm::vec2 & size, const Ref<Texture2D>& texture)
+	{
+		drawQuad({ position.x, position.y, 0.f }, size, texture);
+	}
+
+	void Renderer2D::drawQuad(const glm::vec3 & position, const glm::vec2 & size, const Ref<Texture2D>& texture)
+	{
+		data->textureShader->bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), { size.x, size.y, 1.f });
+		data->textureShader->setMat4("transform", transform);
+
+		texture->bind();
 
 		data->quadVertexArray->bind();
 		RenderCommand::drawIndexed(data->quadVertexArray);

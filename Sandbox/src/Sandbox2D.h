@@ -21,5 +21,7 @@ private:
 	Engine::Ref<Engine::VertexArray> squareVA;
 	Engine::Ref<Engine::Shader> flatColorShader;
 
+	Engine::Ref<Engine::Texture2D> texture;
+
 	glm::vec4 squareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };

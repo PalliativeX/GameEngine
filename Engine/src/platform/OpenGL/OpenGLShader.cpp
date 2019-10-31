@@ -173,6 +173,11 @@ namespace Engine
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::setInt(const std::string & name, int value)
+	{
+		uploadUniformInt(name, value);
+	}
+
 	void OpenGLShader::setMat4(const std::string & name, const glm::mat4 & value)
 	{
 		uploadUniformMat4(name, value);
