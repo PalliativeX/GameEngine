@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {
@@ -52,9 +52,8 @@ namespace Engine
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->uploadUniformMat4("viewProjection", camera.getViewProjectionMatrix());
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->uploadUniformMat4("model", glm::mat4(1.f));
+		data->shader->bind();
+		data->shader->setMat4("viewProjection", camera.getViewProjectionMatrix());
 	}
 
 	void Renderer2D::endScene()
@@ -69,8 +68,12 @@ namespace Engine
 
 	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->uploadUniformFloat4("color", color);
+		data->shader->bind();
+		data->shader->setFloat4("color", color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), { size.x, size.y, 1.f });
+		data->shader->setMat4("model", transform);
+
 
 		data->quadVertexArray->bind();
 		RenderCommand::drawIndexed(data->quadVertexArray);

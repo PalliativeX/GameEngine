@@ -30,7 +30,8 @@ void Sandbox2D::onUpdate(Engine::Timestep ts)
 	Engine::RenderCommand::clear();
 
 	Engine::Renderer2D::beginScene(cameraController.getCamera());
-	Engine::Renderer2D::drawQuad({ 0.f, 0.f }, { 1.f, 1.f }, { 0.8f, 0.2f, 0.3f, 1.f });
+	Engine::Renderer2D::drawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
+	Engine::Renderer2D::drawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.2f, 0.9f, 1.f });
 	Engine::Renderer2D::endScene();
 }
 
