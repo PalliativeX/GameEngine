@@ -12,8 +12,8 @@ namespace Engine
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> quadVertexArray;
-		Ref<Shader> shader;
 		Ref<Shader> textureShader;
+		Ref<Texture2D> whiteTexture;
 	};
 
 	static Renderer2DStorage* data;
@@ -44,7 +44,10 @@ namespace Engine
 		squareIB.reset(IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		data->quadVertexArray->setIndexBuffer(squareIB);
 
-		data->shader = Shader::create("assets/shaders/flatColor.glsl");
+		data->whiteTexture = Texture2D::create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		data->whiteTexture->setData(&whiteTextureData, sizeof(uint32_t));
+
 		data->textureShader= Shader::create("assets/shaders/texture.glsl");
 		data->textureShader->setInt("texture", 0);
 	}
@@ -56,9 +59,6 @@ namespace Engine
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
-		data->shader->bind();
-		data->shader->setMat4("viewProjection", camera.getViewProjectionMatrix());
-
 		data->textureShader->bind();
 		data->textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
 	}
@@ -75,12 +75,11 @@ namespace Engine
 
 	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		data->shader->bind();
-		data->shader->setFloat4("color", color);
+		data->textureShader->setFloat4("color", color);
+		data->whiteTexture->bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), { size.x, size.y, 1.f });
-		data->shader->setMat4("transform", transform);
-
+		data->textureShader->setMat4("transform", transform);
 
 		data->quadVertexArray->bind();
 		RenderCommand::drawIndexed(data->quadVertexArray);
@@ -93,12 +92,11 @@ namespace Engine
 
 	void Renderer2D::drawQuad(const glm::vec3 & position, const glm::vec2 & size, const Ref<Texture2D>& texture)
 	{
-		data->textureShader->bind();
+		data->textureShader->setFloat4("color", glm::vec4(1.f));
+		texture->bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), { size.x, size.y, 1.f });
 		data->textureShader->setMat4("transform", transform);
-
-		texture->bind();
 
 		data->quadVertexArray->bind();
 		RenderCommand::drawIndexed(data->quadVertexArray);
