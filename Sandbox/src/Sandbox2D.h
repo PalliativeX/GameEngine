@@ -23,13 +23,5 @@ private:
 
 	Engine::Ref<Engine::Texture2D> texture;
 
-	struct ProfileResult
-	{
-		const char* name;
-		float time;
-	};
-
-	std::vector<ProfileResult> profileResults;
-
 	glm::vec4 squareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };
