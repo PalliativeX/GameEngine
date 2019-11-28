@@ -13,11 +13,14 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::onAttach()
 {
+	ENGINE_PROFILE_FUNCTION();
+
 	texture = Engine::Texture2D::create("assets/textures/back.jpg");
 }
 
 void Sandbox2D::onDetach()
 {
+	ENGINE_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::onUpdate(Engine::Timestep ts)

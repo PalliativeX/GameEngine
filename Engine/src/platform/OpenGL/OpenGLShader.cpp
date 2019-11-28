@@ -22,6 +22,8 @@ namespace Engine
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		std::string source = readFile(filepath);
 		auto shaderSources = preProcess(source);
 		compile(shaderSources);
@@ -37,6 +39,8 @@ namespace Engine
 	OpenGLShader::OpenGLShader(const std::string& Name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: name(Name)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -45,6 +49,8 @@ namespace Engine
 
 	std::string OpenGLShader::readFile(const std::string& filepath)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
@@ -66,6 +72,8 @@ namespace Engine
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::preProcess(const std::string& source)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -89,6 +97,8 @@ namespace Engine
 
 	void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		ENGINE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
 		std::array<GLenum, 2> glShaderIDs;
@@ -160,16 +170,22 @@ namespace Engine
 
 	OpenGLShader::~OpenGLShader()
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		glDeleteProgram(rendererID);
 	}
 
 	void OpenGLShader::bind() const
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		glUseProgram(rendererID);
 	}
 
 	void OpenGLShader::unbind() const
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 

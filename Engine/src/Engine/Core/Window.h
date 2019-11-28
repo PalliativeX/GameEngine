@@ -14,10 +14,10 @@ namespace Engine
 		unsigned int width;
 		unsigned int height;
 
-		WindowProps(const std::string &Title = "Engine", 
-					unsigned int Width = 1280, 
-					unsigned int Height = 720)
-					: title(Title), width(Width), height(Height)
+		WindowProps(const std::string &title = "Engine", 
+					unsigned int width = 1280, 
+					unsigned int height = 720)
+					: title(title), width(width), height(height)
 		{
 		}
 

@@ -19,16 +19,16 @@ namespace Engine
 
 		inline unsigned int getWidth() const override
 		{
-			return m_Data.Width;
+			return data.width;
 		}
 		inline unsigned int getHeight() const override
 		{
-			return m_Data.Height;
+			return data.height;
 		}
 
 		inline void setEventCallback(const EventCallbackFn &callback) override
 		{
-			m_Data.EventCallback = callback;
+			data.EventCallback = callback;
 		}
 
 		void setVSync(bool enabled) override;
@@ -44,16 +44,16 @@ namespace Engine
 
 		struct WindowData
 		{
-			std::string Title;
-			unsigned int Width;
-			unsigned int Height;
+			std::string title;
+			unsigned int width;
+			unsigned int height;
 
 			bool VSync;
 
 			EventCallbackFn EventCallback;
 		};
 
-		WindowData m_Data;
+		WindowData data;
 	};
 
 }

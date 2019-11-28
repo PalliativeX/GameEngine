@@ -10,7 +10,7 @@ namespace Engine
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(uint32_t Width, uint32_t Height);
+		OpenGLTexture2D(uint32_t width, uint32_t height);
 		OpenGLTexture2D(const std::string& Path);
 		virtual ~OpenGLTexture2D();
 

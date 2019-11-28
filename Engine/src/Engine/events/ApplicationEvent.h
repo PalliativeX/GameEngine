@@ -8,8 +8,8 @@ namespace Engine
 	class ENGINE_API WindowResizeEvent : public Event
 	{
 	public:
-		WindowResizeEvent(unsigned int Width, unsigned int Height)
-						: width(Width), height(Height) {}
+		WindowResizeEvent(unsigned int width, unsigned int height)
+						: width(width), height(height) {}
 
 		inline unsigned int getWidth() const 
 		{ 

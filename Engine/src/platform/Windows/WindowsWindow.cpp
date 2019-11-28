@@ -13,7 +13,7 @@
 namespace Engine 
 {
 
-	static bool s_GLFWInitialized = false;
+	static bool GLFWInitialized = false;
 
 	static void GLFWErrorCallback(int error, const char *description) 
 	{
@@ -22,11 +22,15 @@ namespace Engine
 
 	WindowsWindow::WindowsWindow(const WindowProps &props)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		ShutDown();
 	}
 
@@ -37,37 +41,41 @@ namespace Engine
 
 	void WindowsWindow::Init(const WindowProps &props)
 	{
-		m_Data.Title = props.title;
-		m_Data.Width = props.width;
-		m_Data.Height = props.height;
+		ENGINE_PROFILE_FUNCTION();
+
+		data.title = props.title;
+		data.width = props.width;
+		data.height = props.height;
 
 		ENGINE_LOG_INFO("Creating Window {0}, {1} {2}", props.title, props.width, props.height);
 
-		if (!s_GLFWInitialized)
+		if (!GLFWInitialized)
 		{
+			ENGINE_PROFILE_SCOPE("glfwCreateWindow");
 			int success = glfwInit();
 			ENGINE_ASSERT(success, "Could not initialized GLFW!");
-
 			glfwSetErrorCallback(GLFWErrorCallback);
-
-			s_GLFWInitialized = true;
+			GLFWInitialized = true;
 		}
-		window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
+		{
+			ENGINE_PROFILE_SCOPE("glfwCreateWindow");
+			window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
+		}
 
 		context = new OpenGLContext(window);
-
 		context->init();
 
 		glfwMakeContextCurrent(window);
 
-		glfwSetWindowUserPointer(window, &m_Data);
+		glfwSetWindowUserPointer(window, &data);
 		setVSync(true);
 
 		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			data.Width = width;
-			data.Height = height;
+			data.width = width;
+			data.height = height;
 
 			WindowResizeEvent event(width, height);
 			data.EventCallback(event);
@@ -154,11 +162,15 @@ namespace Engine
 
 	void WindowsWindow::ShutDown()
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(window);
 	}
 
 	void WindowsWindow::onUpdate()
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		context->swapBuffers();
 	}
@@ -167,12 +179,12 @@ namespace Engine
 	{
 		enabled ? glfwSwapInterval(1) : glfwSwapInterval(0);
 
-		m_Data.VSync = enabled;
+		data.VSync = enabled;
 	}
 
 	bool WindowsWindow::isVSyncEnabled() const
 	{
-		return m_Data.VSync;
+		return data.VSync;
 	}
 
 }

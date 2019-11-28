@@ -36,10 +36,15 @@ namespace Engine
 
 	Application::~Application()
 	{
+		//ENGINE_PROFILE_FUNCTION();
+
+		//Renderer::shutdown();
 	}
 
 	void Application::onEvent(Event &event)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(event);
 
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT(Application::onWindowClose));
@@ -55,20 +60,28 @@ namespace Engine
 
 	void Application::pushLayer(Layer * layer)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		layerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer * layer)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		layerStack.pushOverlay(layer);
 		layer->onAttach();
 	}
 
 	void Application::run()
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		while (running)
 		{
+			ENGINE_PROFILE_SCOPE("RunLoop");
+
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - lastFrameTime;
 			lastFrameTime = time;
@@ -77,12 +90,11 @@ namespace Engine
 				for (Layer *layer : layerStack)
 					layer->onUpdate(timestep);
 
+				imguiLayer->begin();
+				for (Layer* layer : layerStack)
+					layer->onImGuiRender();
+				imguiLayer->end();
 			}
-
-			imguiLayer->begin();
-			for (Layer* layer : layerStack)
-				layer->onImGuiRender();
-			imguiLayer->end();
 
 			window->onUpdate();
 		}
@@ -96,6 +108,8 @@ namespace Engine
 
 	bool Application::onWindowResize(WindowResizeEvent& e)
 	{
+		ENGINE_PROFILE_FUNCTION();
+
 		if (e.getWidth() == 0 || e.getHeight() == 0) {
 			minimized = true;
 			return false;
